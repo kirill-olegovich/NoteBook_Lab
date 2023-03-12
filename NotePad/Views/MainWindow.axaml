@@ -1,0 +1,38 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Notepad.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:Notepad.Views"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="600"
+        x:Class="Notepad.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Notepad" Height="600" Width="400">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+    
+    <Panel>
+        <Grid IsVisible="{Binding VisibilityNotePadProperties}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <TextBox Name="contentTextBox" Text="{Binding OutTextBoxProperties, Mode=TwoWay}"
+                     TextWrapping="Wrap" AcceptsReturn="True" 
+                     Watermark="введите текст для заметки" Grid.Row="0"/>
+            <Button Name="openButton" Content="открыть" 
+                    Command="{Binding OpenExplorer}" 
+                    HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Grid.Row="2"/>
+            <Button Name="saveButton" Content="сохранить" 
+                    Command="{Binding SaveExplorer}"
+                    HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Grid.Row="1"/>
+        </Grid>
+        <views:FilesControl IsVisible="{Binding VisibilityExplorerProperties}"/>
+    </Panel>
+</Window>

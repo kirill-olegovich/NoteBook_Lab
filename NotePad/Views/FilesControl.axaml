@@ -1,0 +1,53 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Notepad.Views.FilesControl"
+             xmlns:local="clr-namespace:Notepad.Models"
+             xmlns:conv="clr-namespace:Notepad.Converters"
+             xmlns:vm="clr-namespace:Notepad.ViewModels">
+    <Design.DataContext>
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+    <UserControl.Resources>
+        <conv:ImageConverter x:Key="imageConvert"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+            
+        <ListBox Grid.Row="0" Name="fileListBox" 
+                 SelectedIndex="{Binding CurrentIndexProperties}"
+                 DoubleTapped="DoubleTap" Width="400"
+                 Items="{Binding ExplorerCollectionProperties, Mode=OneWay}">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type local:Explorer}">
+                    <Grid ColumnDefinitions="25*, 75*">
+                        <Image Margin="0 0 50 0" Width="35" Height="35"
+                               Source="{Binding Image, Converter={StaticResource imageConvert}}"/>
+                        <TextBlock Padding="15" Grid.Column="1" TextAlignment="Left" 
+                                   Width="400" Text="{Binding Header}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <TextBox Grid.Row="1" Name="fileTextBox" Text="{Binding OutTextFolderProperties, Mode=TwoWay}"
+                 Width="400" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Grid Grid.Row="2" ColumnDefinitions="Auto, Auto">
+            <Button Name="okButton" Command="{Binding ClickButton}" 
+                    Content="{Binding SaveButtonTextProperties}" 
+                    Grid.Column="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
+                    HorizontalAlignment="Stretch" Width="200"/>
+            <Button Name="cancelButton" Command="{Binding ReturnBack}" 
+                    Grid.Column="1" HorizontalContentAlignment="Center" 
+                    VerticalContentAlignment="Stretch" HorizontalAlignment="Right" 
+                    Width="200" Content="Отмена"/>
+        </Grid>
+    </Grid>
+</UserControl>
+
+
